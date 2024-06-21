@@ -32,34 +32,6 @@ config() {
    spring_datasource_url="jdbc:mysql://$dbhost/$dbname?useUnicode=true&characterEncoding=UTF-8\&useSSL=false\&useTimezone=true\&serverTimezone=GMT%2B8"
    registry_zookeeper_connect_string="$zookeeper_server"
 
-
-   database="mysql"
-
-   spring_cache_type="none"
-   spring_jackson_time_zone="Asia/Shanghai"
-   master_fetch_command_num=50
-
-   registry_type="zookeeper"
-
-
-   hadoop_home="/opt/soft/hadoop"
-   hadoop_conf_dir="/opt/soft/hadoop/etc/hadoop"
-   spark_home1="/opt/soft/spark1"
-   spark_home2="/opt/soft/spark2"
-   python_home="/opt/soft/python"
-   hive_home="/opt/soft/hive"
-   flink_home="/opt/soft/flink"
-   datax_home="/opt/soft/datax"
-   seatunnel_home="/opt/soft/seatunnel"
-   chunjun_home="/opt/soft/chunjun"
-
-   path='$HADOOP_HOME/bin:$SPARK_HOME1/bin:$SPARK_HOME2/bin:$PYTHON_HOME/bin:$JAVA_HOME/bin:$HIVE_HOME/bin:$FLINK_HOME/bin:$DATAX_HOME/bin:$SEATUNNEL_HOME/bin:$CHUNJUN_HOME/bin:$PATH'
-
-
-   ssh_port=22
-   deployUser="dolphinscheduler"
-   zkRoot="/dolphinscheduler"
-
    # JAVA_HOME, will use it to start DolphinScheduler server
    sed -i  "s#JAVA_HOME.*#JAVA_HOME=\"$JAVA_HOME\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    # Database related configuration, set database type, username and password
