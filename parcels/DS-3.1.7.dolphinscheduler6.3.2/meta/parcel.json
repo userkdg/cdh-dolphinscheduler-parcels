@@ -1,9 +1,9 @@
 {
   "schema_version":     1,
   "name":               "DS",
-  "version":            "2.0.6.dolphinscheduler7.1.7",
+  "version":            "3.1.7.dolphinscheduler6.3.2",
   "setActiveSymlink":   true,
-  "depends": "CDH (>= 7.0), CDH (<< 8)",
+  "depends": "CDH (>= 5.0), CDH (<< 7)",
   "provides": ["ds"],
   "scripts": {
     "defines": "ds_env.sh"
@@ -11,13 +11,13 @@
  
   "packages": [{
     "name": "dolphinscheduler",
-    "version": "2.0.6.ds7.1.7"
+    "version": "3.1.7.ds6.3.2"
   }],
  
   "components": [{
     "name":    "dolphinscheduler",
-    "version": "2.0.6.ds7.1.7",
-    "pkg_version": "2.0.6.ds7.1.7"
+    "version": "3.1.7.ds6.3.2",
+    "pkg_version": "3.1.7.ds6.3.2"
   }],
  
   "users": {
