@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-usage="Usage: dolphinscheduler-daemon.sh (start|stop|status) <api-server|master-server|worker-server|alert-server|standalone-server|python-gateway-server> "
+usage="Usage: dolphinscheduler-daemon.sh (start|stop|status) <api-server|master-server|worker-server|alert-server|standalone-server> "
 
 # if no args specified, show usage
 if [ $# -le 1 ]; then
@@ -33,22 +33,26 @@ echo "Begin $startStop $command......"
 
 BIN_DIR=`dirname $0`
 BIN_DIR=`cd "$BIN_DIR"; pwd`
-export DOLPHINSCHEDULER_HOME=`cd "$BIN_DIR/.."; pwd`
+DOLPHINSCHEDULER_HOME=`cd "$BIN_DIR/.."; pwd`
+BIN_ENV_FILE="${DOLPHINSCHEDULER_HOME}/bin/env/dolphinscheduler_env.sh"
 
-chmod -R 700 ${DOLPHINSCHEDULER_HOME}/conf/config
-source /etc/profile
-set -a
-source "${DOLPHINSCHEDULER_HOME}/conf/env/dolphinscheduler_env.sh"
-source "${DOLPHINSCHEDULER_HOME}/conf/config/install_config.conf"
-set +a
+# Overwrite server dolphinscheduler_env.sh in path `<server>/conf/dolphinscheduler_env.sh` when exists
+# `bin/env/dolphinscheduler_env.sh` file. User could only change `bin/env/dolphinscheduler_env.sh` instead
+# of each server's dolphinscheduler_env.sh when they want to start the server
+function overwrite_server_env() {
+  local server=$1
+  local server_env_file="${DOLPHINSCHEDULER_HOME}/${server}/conf/dolphinscheduler_env.sh"
+  if [ -f "${BIN_ENV_FILE}" ]; then
+    echo "Overwrite ${server}/conf/dolphinscheduler_env.sh using bin/env/dolphinscheduler_env.sh."
+    cp "${BIN_ENV_FILE}" "${server_env_file}"
+  else
+    echo "Start server ${server} using env config path ${server_env_file}, because file ${BIN_ENV_FILE} not exists."
+  fi
+}
 
 export HOSTNAME=`hostname`
 
-export DOLPHINSCHEDULER_PID_DIR=$DOLPHINSCHEDULER_HOME/pid
-export DOLPHINSCHEDULER_LOG_DIR=$DOLPHINSCHEDULER_HOME/logs
-export DOLPHINSCHEDULER_CONF_DIR=$DOLPHINSCHEDULER_HOME/conf
-export DOLPHINSCHEDULER_SQL_DIR=$DOLPHINSCHEDULER_HOME/sql
-export DOLPHINSCHEDULER_LIB_JARS=$DOLPHINSCHEDULER_HOME/lib/*
+export DOLPHINSCHEDULER_LOG_DIR=$DOLPHINSCHEDULER_HOME/$command/logs
 
 export STOP_TIMEOUT=5
 
@@ -56,116 +60,77 @@ if [ ! -d "$DOLPHINSCHEDULER_LOG_DIR" ]; then
   mkdir $DOLPHINSCHEDULER_LOG_DIR
 fi
 
-log=$DOLPHINSCHEDULER_LOG_DIR/dolphinscheduler-$command-$HOSTNAME.out
-pid=$DOLPHINSCHEDULER_PID_DIR/dolphinscheduler-$command.pid
+pid=$DOLPHINSCHEDULER_HOME/$command/pid
 
-cd $DOLPHINSCHEDULER_HOME
+cd $DOLPHINSCHEDULER_HOME/$command
 
-export DOLPHINSCHEDULER_OPTS="-server -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m -Xss512k -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:LargePageSizeInBytes=128m -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 -XX:+PrintGCDetails -Xloggc:$DOLPHINSCHEDULER_LOG_DIR/gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=dump.hprof -XshowSettings:vm $DOLPHINSCHEDULER_OPTS"
-
-export DATABASE_TYPE=${DATABASE_TYPE:-"h2"}
-export SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-"default"}
-serverName=t
 if [ "$command" = "api-server" ]; then
-  LOG_FILE="-Dlogging.config=classpath:logback-api.xml"
-  CLASS=org.apache.dolphinscheduler.api.ApiApplicationServer
-  HEAP_OPTS="-Xms1g -Xmx1g -Xmn512m"
-  export DOLPHINSCHEDULER_OPTS="$HEAP_OPTS $DOLPHINSCHEDULER_OPTS $API_SERVER_OPTS"
-  export SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE},api,${DATABASE_TYPE}"
-  serverName=ApiApplicationServer
+  log=$DOLPHINSCHEDULER_HOME/api-server/logs/$command-$HOSTNAME.out
 elif [ "$command" = "master-server" ]; then
-  LOG_FILE="-Dlogging.config=classpath:logback-master.xml"
-  CLASS=org.apache.dolphinscheduler.server.master.MasterServer
-  HEAP_OPTS="-Xms4g -Xmx4g -Xmn2g"
-  export DOLPHINSCHEDULER_OPTS="$HEAP_OPTS $DOLPHINSCHEDULER_OPTS $MASTER_SERVER_OPTS"
-  export SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE},master,${DATABASE_TYPE}"
-  serverName=MasterServer
+  log=$DOLPHINSCHEDULER_HOME/master-server/logs/$command-$HOSTNAME.out
 elif [ "$command" = "worker-server" ]; then
-  LOG_FILE="-Dlogging.config=classpath:logback-worker.xml"
-  CLASS=org.apache.dolphinscheduler.server.worker.WorkerServer
-  HEAP_OPTS="-Xms2g -Xmx2g -Xmn1g"
-  export DOLPHINSCHEDULER_OPTS="$HEAP_OPTS $DOLPHINSCHEDULER_OPTS $WORKER_SERVER_OPTS"
-  export SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE},worker,${DATABASE_TYPE}"
-  serverName=WorkerServer
+  log=$DOLPHINSCHEDULER_HOME/worker-server/logs/$command-$HOSTNAME.out
 elif [ "$command" = "alert-server" ]; then
-  LOG_FILE="-Dlogback.configurationFile=conf/logback-alert.xml"
-  CLASS=org.apache.dolphinscheduler.alert.AlertServer
-  HEAP_OPTS="-Xms1g -Xmx1g -Xmn512m"
-  export DOLPHINSCHEDULER_OPTS="$HEAP_OPTS $DOLPHINSCHEDULER_OPTS $ALERT_SERVER_OPTS"
-  export SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE},alert,${DATABASE_TYPE}"
-  serverName=AlertServer
-elif [ "$command" = "logger-server" ]; then
-  CLASS=org.apache.dolphinscheduler.server.log.LoggerServer
-  HEAP_OPTS="-Xms1g -Xmx1g -Xmn512m"
-  export DOLPHINSCHEDULER_OPTS="$HEAP_OPTS $DOLPHINSCHEDULER_OPTS $LOGGER_SERVER_OPTS"
-  serverName=LoggerServer
+  log=$DOLPHINSCHEDULER_HOME/alert-server/logs/$command-$HOSTNAME.out
 elif [ "$command" = "standalone-server" ]; then
-  CLASS=org.apache.dolphinscheduler.server.StandaloneServer
-  export SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE},standalone,${DATABASE_TYPE}"
-  serverName=StandaloneServer
-elif [ "$command" = "python-gateway-server" ]; then
-  CLASS=org.apache.dolphinscheduler.server.PythonGatewayServer
-  export SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE},python-gateway,${DATABASE_TYPE}"
-  serverName=PythonGatewayServer
+  log=$DOLPHINSCHEDULER_HOME/standalone-server/logs/$command-$HOSTNAME.out
 else
   echo "Error: No command named '$command' was found."
   exit 1
 fi
 
+state=""
+function get_server_running_status() {
+  state="STOP"
+  if [ -f $pid ]; then
+    TARGET_PID=`cat $pid`
+    if [[ $(ps -p "$TARGET_PID" -o comm=) =~ "bash" ]]; then
+      state="RUNNING"
+    fi
+  fi
+}
+
 case $startStop in
   (start)
-    if [ "$DOCKER" = "true" ]; then
-      echo start $command in docker
-      export DOLPHINSCHEDULER_OPTS="$DOLPHINSCHEDULER_OPTS -XX:-UseContainerSupport"
-      exec_command="$LOG_FILE $DOLPHINSCHEDULER_OPTS -classpath $DOLPHINSCHEDULER_SQL_DIR:$DOLPHINSCHEDULER_CONF_DIR:$DOLPHINSCHEDULER_LIB_JARS $CLASS"
-      $JAVA_HOME/bin/java $exec_command
-    else
-      [ -w "$DOLPHINSCHEDULER_PID_DIR" ] || mkdir -p "$DOLPHINSCHEDULER_PID_DIR"
-
-      if [ -f $pid ]; then
-        if kill -0 `cat $pid` > /dev/null 2>&1; then
-          echo $command running as process `cat $pid`.  Stop it first.
-          exit 1
-        fi
-      fi
-
-      echo starting $command, logging to $log
-      exec_command="$LOG_FILE $DOLPHINSCHEDULER_OPTS -classpath $DOLPHINSCHEDULER_SQL_DIR:$DOLPHINSCHEDULER_CONF_DIR:$DOLPHINSCHEDULER_LIB_JARS $CLASS"
-      echo "nohup $JAVA_HOME/bin/java $exec_command > $log 2>&1"
-      nohup $JAVA_HOME/bin/java $exec_command > $log 2>&1
-      echo $! > $pid
+    # if server is already started, cancel this launch
+    get_server_running_status
+    if [[ $state == "RUNNING" ]]; then
+      echo "$command running as process $TARGET_PID.  Stop it first."
+      exit 1
     fi
+    echo starting $command, logging to $DOLPHINSCHEDULER_LOG_DIR
+    overwrite_server_env "${command}"
+    nohup /bin/bash "$DOLPHINSCHEDULER_HOME/$command/bin/start.sh" > $log 2>&1 #&
+    echo $! > $pid
     ;;
 
   (stop)
-
-      pid=$(ps x | grep $serverName  | grep -v grep | awk '{print $1}')
-        if [ -z "$pid" ]
-        then
-            echo "no $command to stop"
+      #pid=$(ps x | grep $serverName  | grep -v grep | awk '{print $1}')
+      if [ -f $pid ]; then
+        TARGET_PID=`cat $pid`
+        if kill -0 $TARGET_PID > /dev/null 2>&1; then
+          echo stopping $command
+          pkill -P $TARGET_PID
+          sleep $STOP_TIMEOUT
+          if kill -0 $TARGET_PID > /dev/null 2>&1; then
+            echo "$command did not stop gracefully after $STOP_TIMEOUT seconds: killing with kill -9"
+            pkill -P -9 $TARGET_PID
+          fi
         else
-            echo "stopping $command $pid"
-            for pid in ${pid[*]}
-            do
-              kill $pid
-              sleep $STOP_TIMEOUT
-              if kill -0 $pid > /dev/null 2>&1; then
-                echo "$command did not stop gracefully after $STOP_TIMEOUT seconds: killing with kill -9"
-                kill -9 $pid
-              fi
-            done
-            sleep 5
+          echo no $command to stop
         fi
+        rm -f $pid
+      else
+        echo no $command to stop
+      fi
       ;;
 
   (status)
-    # more details about the status can be added later
-    serverCount=`ps -ef | grep "$DOLPHINSCHEDULER_HOME" | grep "$CLASS" | grep -v "grep" | wc -l`
-    state="STOP"
-    #  font color - red
-    state="[ \033[1;31m $state \033[0m ]"
-    if [[ $serverCount -gt 0 ]];then
-      state="RUNNING"
+    get_server_running_status
+    if [[ $state == "STOP" ]]; then
+      #  font color - red
+      state="[ \033[1;31m $state \033[0m ]"
+    else
       # font color - green
       state="[ \033[1;32m $state \033[0m ]"
     fi
@@ -180,4 +145,3 @@ case $startStop in
 esac
 
 echo "End $startStop $command."
-

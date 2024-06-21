@@ -1,436 +1,638 @@
 {
-        "name": "DS",
-        "label": "DS",
-        "description": "Apache dolphinscheduler",
-        "version": "3.1.7",
-        "runAs": {
-                "user": "root",
-                "group": "root"
-        },
-        "maxInstances": 6,
-        "icon": "images/icon.png",
-        "compatibility": {
-                "generation": 1,
-                "cdhVersion" : { "min" : "6" }
-        },
-        "parcel": {
-                "requiredTags": ["ds"]
-        },
-        "roleWithExternalLinks": ["DS_WEB_UI"],
-        "roles": [{
-                "name": "MASTER_SERVER",
-                "label": "MASTER_SERVER",
-                "pluralLabel": "dolphinscheduler master-server",
-                "jvmBased": true,
-                "startRunner": {
-                        "program": "scripts/control.sh start",
-                        "args": ["start"],
-                        "environmentVariables": {
-                                "server_name": "master-server"
-                        }
-                },
-                "stopRunner": {
-                        "timeout": "90000",
-                        "runner": {
-                                "program": "scripts/control.sh",
-                                "args": ["stop"],
-                                "environmentVariables": {
-                                        "server_name": "master-server"
-                                }
-                        }
-                },
-                "topology": {
-                        "minInstances": "1",
-                        "requiresOddNumberOfInstances": "false",
-                        "placementRules": []
-                },
-                "configWriter": {
-                        "generators": [{
-                                "filename": "ds-conf.properties",
-                                "configFormat": "properties",
-                                "includeParams": [
-                                        "dbhost",
-                                        "dhname",
-                                        "username",
-                                        "password",
-                                        "zookeeper_server",
-                                        "masters",
-                                        "workers",
-                                        "alertServer",
-                                        "apiServers",
-                                        "pythonGatewayServers",
-                                        "api_server_port",
-                                        "install_path"
-                                ]
-                        }]
-                }
-        }, {
-                "name": "WORKER_SERVER",
-                "label": "WORKER_SERVER",
-                "pluralLabel": "dolphinscheduler worker-server",
-                "jvmBased": true,
-                "startRunner": {
-                        "program": "scripts/control.sh start",
-                        "args": ["start"],
-                        "environmentVariables": {
-                                "server_name": "worker-server"
-                        }
-                },
-                "stopRunner": {
-                        "timeout": "90000",
-                        "runner": {
-                                "program": "scripts/control.sh",
-                                "args": ["stop"],
-                                "environmentVariables": {
-                                        "server_name": "worker-server"
-                                }
-                        }
-                },
-                "topology": {
-                        "minInstances": "1",
-                        "requiresOddNumberOfInstances": "false",
-                        "placementRules": []
-                },
-                "configWriter": {
-                        "generators": [{
-                                "filename": "ds-conf.properties",
-                                "configFormat": "properties",
-                                "includeParams": [
-                                        "dbhost",
-                                        "dhname",
-                                        "username",
-                                        "password",
-                                        "zookeeper_server",
-                                        "masters",
-                                        "workers",
-                                        "alertServer",
-                                        "apiServers",
-                                        "pythonGatewayServers",
-                                        "api_server_port",
-                                        "install_path"
-                                ]
-                        }]
-                }
-        }, {
-                "name": "LOGGER_SERVER",
-                "label": "LOGGER_SERVER",
-                "pluralLabel": "dolphinscheduler logger-server",
-                "jvmBased": true,
-                "startRunner": {
-                        "program": "scripts/control.sh start",
-                        "args": ["start"],
-                        "environmentVariables": {
-                                "server_name": "logger-server"
-                        }
-                },
-                "stopRunner": {
-                        "timeout": "90000",
-                        "runner": {
-                                "program": "scripts/control.sh",
-                                "args": ["stop"],
-                                "environmentVariables": {
-                                        "server_name": "logger-server"
-                                }
-                        }
-                },
-                "configWriter": {
-                        "generators": [{
-                                "filename": "ds-conf.properties",
-                                "configFormat": "properties",
-                                "includeParams": [
-                                        "dbhost",
-                                        "dhname",
-                                        "username",
-                                        "password",
-                                        "zookeeper_server",
-                                        "masters",
-                                        "workers",
-                                        "alertServer",
-                                        "apiServers",
-                                        "pythonGatewayServers",
-                                        "api_server_port",
-                                        "install_path"
-                                ]
-                        }]
-                }
-        }, {
-                "name": "ALERT_SERVER",
-                "label": "ALERT_SERVER",
-                "pluralLabel": "dolphinscheduler alert-server",
-                "jvmBased": true,
-                "startRunner": {
-                        "program": "scripts/control.sh start",
-                        "args": ["start"],
-                        "environmentVariables": {
-                                "server_name": "alert-server"
-                        }
-                },
-                "stopRunner": {
-                        "timeout": "90000",
-                        "runner": {
-                                "program": "scripts/control.sh",
-                                "args": ["stop"],
-                                "environmentVariables": {
-                                        "server_name": "alert-server"
-                                }
-                        }
-                },
-                "topology": {
-                        "maxInstances": "1",
-                        "requiresOddNumberOfInstances": "false",
-                        "placementRules": []
-                },
-                "configWriter": {
-                        "generators": [{
-                                "filename": "ds-conf.properties",
-                                "configFormat": "properties",
-                                "includeParams": [
-                                        "dbhost",
-                                        "dhname",
-                                        "username",
-                                        "password",
-                                        "zookeeper_server",
-                                        "masters",
-                                        "workers",
-                                        "alertServer",
-                                        "apiServers",
-                                        "pythonGatewayServers",
-                                        "api_server_port",
-                                        "install_path"
-                                ]
-                        }]
-                }
-        }, {
-                "name": "DS_API_SERVER",
-                "label": "DS_API_SERVER",
-                "pluralLabel": "dolphinscheduler api-server",
-                "jvmBased": true,
-                "startRunner": {
-                        "program": "scripts/control.sh start",
-                        "args": ["start"],
-                        "environmentVariables": {
-                                "server_name": "api-server"
-                        }
-                },
-                "stopRunner": {
-                        "timeout": "90000",
-                        "runner": {
-                                "program": "scripts/control.sh",
-                                "args": ["stop"],
-                                "environmentVariables": {
-                                        "server_name": "api-server"
-                                }
-                        }
-                },
-                "externalLink": {
-                        "name": "DS_WEB_UI",
-                        "label": "DS_WEB_UI",
-                        "url": "http://${apiServers}:${api_server_port}/dolphinscheduler"
-                },
-                "topology": {
-                        "minInstances": "1",
-                        "maxInstances": "1",
-                        "requiresOddNumberOfInstances": "false",
-                        "placementRules": []
-                },
-                "configWriter": {
-                        "generators": [{
-                                "filename": "ds-conf.properties",
-                                "configFormat": "properties",
-                                "includeParams": [
-                                        "dbhost",
-                                        "dhname",
-                                        "username",
-                                        "password",
-                                        "zookeeper_server",
-                                        "masters",
-                                        "workers",
-                                        "alertServer",
-                                        "apiServers",
-                                        "pythonGatewayServers",
-                                        "api_server_port",
-                                        "install_path"
-                                ]
-                        }]
-                }
-        }, {
-                "name": "PYTHON_SERVER",
-                "label": "PYTHON_SERVER",
-                "pluralLabel": "dolphinscheduler python-gateway-server",
-                "jvmBased": true,
-                "startRunner": {
-                        "program": "scripts/control.sh start",
-                        "args": ["start"],
-                        "environmentVariables": {
-                                "server_name": "python-gateway-server"
-                        }
-                },
-                "stopRunner": {
-                        "timeout": "90000",
-                        "runner": {
-                                "program": "scripts/control.sh",
-                                "args": ["stop"],
-                                "environmentVariables": {
-                                        "server_name": "python-gateway-server"
-                                }
-                        }
-                },
-                "topology": {
-                        "maxInstances": "1",
-                        "requiresOddNumberOfInstances": "false",
-                        "placementRules": []
-                },
-                "configWriter": {
-                        "generators": [{
-                                "filename": "ds-conf.properties",
-                                "configFormat": "properties",
-                                "includeParams": [
-                                        "dbhost",
-                                        "dhname",
-                                        "username",
-                                        "password",
-                                        "zookeeper_server",
-                                        "masters",
-                                        "workers",
-                                        "alertServer",
-                                        "apiServers",
-                                        "pythonGatewayServers",
-                                        "api_server_port",
-                                        "install_path"
-                                ]
-                        }]
-                }
-        }],
-        "parameters": [{
-                        "name": "dbhost",
-                        "label": "dbhost",
-                        "description": "mysql服务器地址",
-                        "configName": "dbhost",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost"
-                },
-                {
-                        "name": "dbname",
-                        "label": "databases",
-                        "description": "数据库名称",
-                        "configName": "dbname",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "dolphinscheduler"
-                },
-                {
-                        "name": "username",
-                        "label": "username",
-                        "description": "username",
-                        "configName": "username",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "root"
-                },
-                {
-                        "name": "password",
-                        "label": "password",
-                        "description": "password",
-                        "configName": "password",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "root"
-                },
-                {
-                        "name": "zookeeper_server",
-                        "label": "Zookeeper Server",
-                        "description": "zookeeper_server",
-                        "configName": "zookeeper_server",
-                        "required": "false",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost:2181"
-                },
-                {
-                        "name": "ips",
-                        "label": "IPS",
-                        "description": "所有安装ds服务等主机IP或HOSTNAME",
-                        "configName": "ips",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost"
-                },
-                {
-                        "name": "masters",
-                        "label": "Masters",
-                        "description": "master-server地址,ds1,ds2",
-                        "configName": "masters",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost"
-                },
-                {
-                        "name": "workers",
-                        "label": "Workers",
-                        "description": "worker-server地址,ds1:default,ds2:default",
-                        "configName": "workers",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost:default"
-                },
-                {
-                        "name": "alertServer",
-                        "label": "AlertServer",
-                        "description": "alert-server地址,ds1",
-                        "configName": "alertServer",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost"
-                },
-                {
-                        "name": "apiServers",
-                        "label": "ApiServers",
-                        "description": "api-server地址,ds1",
-                        "configName": "apiServers",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost"
-                },
-                {
-                        "name": "pythonGatewayServers",
-                        "label": "pythonGatewayServers",
-                        "description": "pythonGateway-server地址,ds1",
-                        "configName": "pythonGatewayServers",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": true,
-                        "default": "localhost"
-                },
-                {
-                        "name": "api_server_port",
-                        "label": "apiServerPort",
-                        "description": "ui展示端口",
-                        "configName": "api_server_port",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": false,
-                        "default": "12345"
-                },
-                {
-                        "name": "install_path",
-                        "label": "InstallPath",
-                        "description": "实例保存路径",
-                        "configName": "install_path",
-                        "required": "true",
-                        "type": "string",
-                        "configurableInWizard": false,
-                        "default": "/tmp/dolphinscheduler"
-                }
-
+  "name": "DS",
+  "label": "DS",
+  "description": "Apache dolphinscheduler",
+  "version": "3.1.7",
+  "runAs": {
+    "user": "root",
+    "group": "root"
+  },
+  "maxInstances": 6,
+  "icon": "images/icon.png",
+  "compatibility": {
+    "generation": 1,
+    "cdhVersion": {
+      "min": "6"
+    }
+  },
+  "parcel": {
+    "requiredTags": [
+      "ds"
+    ]
+  },
+  "roleWithExternalLinks": [
+    "DS_WEB_UI"
+  ],
+  "roles": [
+    {
+      "name": "MASTER_SERVER",
+      "label": "MASTER_SERVER",
+      "pluralLabel": "dolphinscheduler master-server",
+      "jvmBased": true,
+      "startRunner": {
+        "program": "scripts/control.sh start",
+        "args": [
+          "start"
+        ],
+        "environmentVariables": {
+          "server_name": "master-server"
+        }
+      },
+      "stopRunner": {
+        "timeout": "90000",
+        "runner": {
+          "program": "scripts/control.sh",
+          "args": [
+            "stop"
+          ],
+          "environmentVariables": {
+            "server_name": "master-server"
+          }
+        }
+      },
+      "topology": {
+        "minInstances": "1",
+        "requiresOddNumberOfInstances": "false",
+        "placementRules": []
+      },
+      "configWriter": {
+        "generators": [
+          {
+            "filename": "ds-conf.properties",
+            "configFormat": "properties",
+            "includeParams": [
+              "dbhost",
+              "dhname",
+              "username",
+              "password",
+              "zookeeper_server",
+              "masters",
+              "workers",
+              "alertServer",
+              "apiServers",
+              "pythonGatewayServers",
+              "api_server_port",
+              "install_path",
+              "database",
+              "spring_cache_type",
+              "spring_jackson_time_zone",
+              "master_fetch_command_num",
+              "registry_type",
+              "hadoop_home",
+              "hadoop_conf_dir",
+              "spark_home1",
+              "spark_home2",
+              "python_home",
+              "hive_home",
+              "flink_home",
+              "datax_home",
+              "seatunnel_home",
+              "chunjun_home",
+              "path",
+              "ssh_port",
+              "deployUser",
+              "zkRoot"
+            ]
+          }
         ]
+      }
+    },
+    {
+      "name": "WORKER_SERVER",
+      "label": "WORKER_SERVER",
+      "pluralLabel": "dolphinscheduler worker-server",
+      "jvmBased": true,
+      "startRunner": {
+        "program": "scripts/control.sh start",
+        "args": [
+          "start"
+        ],
+        "environmentVariables": {
+          "server_name": "worker-server"
+        }
+      },
+      "stopRunner": {
+        "timeout": "90000",
+        "runner": {
+          "program": "scripts/control.sh",
+          "args": [
+            "stop"
+          ],
+          "environmentVariables": {
+            "server_name": "worker-server"
+          }
+        }
+      },
+      "topology": {
+        "minInstances": "1",
+        "requiresOddNumberOfInstances": "false",
+        "placementRules": []
+      },
+      "configWriter": {
+        "generators": [
+          {
+            "filename": "ds-conf.properties",
+            "configFormat": "properties",
+            "includeParams": [
+              "dbhost",
+              "dhname",
+              "username",
+              "password",
+              "zookeeper_server",
+              "masters",
+              "workers",
+              "alertServer",
+              "apiServers",
+              "pythonGatewayServers",
+              "api_server_port",
+              "install_path",
+              "database",
+              "spring_cache_type",
+              "spring_jackson_time_zone",
+              "master_fetch_command_num",
+              "registry_type",
+              "hadoop_home",
+              "hadoop_conf_dir",
+              "spark_home1",
+              "spark_home2",
+              "python_home",
+              "hive_home",
+              "flink_home",
+              "datax_home",
+              "seatunnel_home",
+              "chunjun_home",
+              "path",
+              "ssh_port",
+              "deployUser",
+              "zkRoot"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ALERT_SERVER",
+      "label": "ALERT_SERVER",
+      "pluralLabel": "dolphinscheduler alert-server",
+      "jvmBased": true,
+      "startRunner": {
+        "program": "scripts/control.sh start",
+        "args": [
+          "start"
+        ],
+        "environmentVariables": {
+          "server_name": "alert-server"
+        }
+      },
+      "stopRunner": {
+        "timeout": "90000",
+        "runner": {
+          "program": "scripts/control.sh",
+          "args": [
+            "stop"
+          ],
+          "environmentVariables": {
+            "server_name": "alert-server"
+          }
+        }
+      },
+      "topology": {
+        "maxInstances": "1",
+        "requiresOddNumberOfInstances": "false",
+        "placementRules": []
+      },
+      "configWriter": {
+        "generators": [
+          {
+            "filename": "ds-conf.properties",
+            "configFormat": "properties",
+            "includeParams": [
+              "dbhost",
+              "dhname",
+              "username",
+              "password",
+              "zookeeper_server",
+              "masters",
+              "workers",
+              "alertServer",
+              "apiServers",
+              "pythonGatewayServers",
+              "api_server_port",
+              "install_path",
+              "database",
+              "spring_cache_type",
+              "spring_jackson_time_zone",
+              "master_fetch_command_num",
+              "registry_type",
+              "hadoop_home",
+              "hadoop_conf_dir",
+              "spark_home1",
+              "spark_home2",
+              "python_home",
+              "hive_home",
+              "flink_home",
+              "datax_home",
+              "seatunnel_home",
+              "chunjun_home",
+              "path",
+              "ssh_port",
+              "deployUser",
+              "zkRoot"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "DS_API_SERVER",
+      "label": "DS_API_SERVER",
+      "pluralLabel": "dolphinscheduler api-server",
+      "jvmBased": true,
+      "startRunner": {
+        "program": "scripts/control.sh start",
+        "args": [
+          "start"
+        ],
+        "environmentVariables": {
+          "server_name": "api-server"
+        }
+      },
+      "stopRunner": {
+        "timeout": "90000",
+        "runner": {
+          "program": "scripts/control.sh",
+          "args": [
+            "stop"
+          ],
+          "environmentVariables": {
+            "server_name": "api-server"
+          }
+        }
+      },
+      "externalLink": {
+        "name": "DS_WEB_UI",
+        "label": "DS_WEB_UI",
+        "url": "http://${apiServers}:${api_server_port}/dolphinscheduler"
+      },
+      "topology": {
+        "minInstances": "1",
+        "maxInstances": "1",
+        "requiresOddNumberOfInstances": "false",
+        "placementRules": []
+      },
+      "configWriter": {
+        "generators": [
+          {
+            "filename": "ds-conf.properties",
+            "configFormat": "properties",
+            "includeParams": [
+              "dbhost",
+              "dhname",
+              "username",
+              "password",
+              "zookeeper_server",
+              "masters",
+              "workers",
+              "alertServer",
+              "apiServers",
+              "pythonGatewayServers",
+              "api_server_port",
+              "install_path",
+              "database",
+              "spring_cache_type",
+              "spring_jackson_time_zone",
+              "master_fetch_command_num",
+              "registry_type",
+              "hadoop_home",
+              "hadoop_conf_dir",
+              "spark_home1",
+              "spark_home2",
+              "python_home",
+              "hive_home",
+              "flink_home",
+              "datax_home",
+              "seatunnel_home",
+              "chunjun_home",
+              "path",
+              "ssh_port",
+              "deployUser",
+              "zkRoot"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "database",
+      "label": "database",
+      "description": "数据库类型",
+      "configName": "database",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "mysql"
+    },
+    {
+      "name": "dbhost",
+      "label": "dbhost",
+      "description": "服务器地址",
+      "configName": "dbhost",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "localhost"
+    },
+    {
+      "name": "dbname",
+      "label": "databases",
+      "description": "数据库名称",
+      "configName": "dbname",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "dolphinscheduler"
+    },
+    {
+      "name": "username",
+      "label": "username",
+      "description": "username",
+      "configName": "username",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "root"
+    },
+    {
+      "name": "password",
+      "label": "password",
+      "description": "password",
+      "configName": "password",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "123456"
+    },
+    {
+      "name": "zookeeper_server",
+      "label": "Zookeeper Server",
+      "description": "zookeeper_server",
+      "configName": "zookeeper_server",
+      "required": "false",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "localhost:2181"
+    },
+    {
+      "name": "ips",
+      "label": "IPS",
+      "description": "所有安装ds服务等主机IP或HOSTNAME",
+      "configName": "ips",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "localhost"
+    },
+    {
+      "name": "masters",
+      "label": "Masters",
+      "description": "master-server地址,ds1,ds2",
+      "configName": "masters",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "localhost"
+    },
+    {
+      "name": "workers",
+      "label": "Workers",
+      "description": "worker-server地址,ds1:default,ds2:default",
+      "configName": "workers",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "localhost:default"
+    },
+    {
+      "name": "alertServer",
+      "label": "AlertServer",
+      "description": "alert-server地址,ds1",
+      "configName": "alertServer",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "localhost"
+    },
+    {
+      "name": "apiServers",
+      "label": "ApiServers",
+      "description": "api-server地址,ds1",
+      "configName": "apiServers",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": true,
+      "default": "localhost"
+    },
+    {
+      "name": "api_server_port",
+      "label": "apiServerPort",
+      "description": "ui展示端口",
+      "configName": "api_server_port",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "12345"
+    },
+    {
+      "name": "install_path",
+      "label": "InstallPath",
+      "description": "实例保存路径",
+      "configName": "install_path",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/tmp/dolphinscheduler"
+    },
+    {
+      "name": "spring_cache_type",
+      "label": "spring_cache_type",
+      "description": "",
+      "configName": "spring_cache_type",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "none"
+    },
+    {
+      "name": "spring_jackson_time_zone",
+      "label": "spring_jackson_time_zone",
+      "description": "",
+      "configName": "spring_jackson_time_zone",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "Asia/Shanghai"
+    },
+    {
+      "name": "master_fetch_command_num",
+      "label": "master_fetch_command_num",
+      "description": "",
+      "configName": "master_fetch_command_num",
+      "required": "true",
+      "type": "int",
+      "configurableInWizard": false,
+      "default": "50"
+    },
+    {
+      "name": "registry_type",
+      "label": "registry_type",
+      "description": "",
+      "configName": "registry_type",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "zookeeper"
+    },
+    {
+      "name": "hadoop_home",
+      "label": "hadoop_home",
+      "description": "",
+      "configName": "hadoop_home",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/hadoop"
+    },
+    {
+      "name": "hadoop_conf_dir",
+      "label": "hadoop_conf_dir",
+      "description": "",
+      "configName": "hadoop_conf_dir",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/hadoop/etc/hadoop"
+    },
+    {
+      "name": "spark_home1",
+      "label": "spark_home1",
+      "description": "",
+      "configName": "spark_home1",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/spark1"
+    },
+    {
+      "name": "spark_home2",
+      "label": "spark_home2",
+      "description": "",
+      "configName": "spark_home2",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/spark2"
+    },
+    {
+      "name": "python_home",
+      "label": "python_home",
+      "description": "",
+      "configName": "python_home",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/python"
+    },
+    {
+      "name": "hive_home",
+      "label": "hive_home",
+      "description": "",
+      "configName": "hive_home",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/hive"
+    },
+    {
+      "name": "flink_home",
+      "label": "flink_home",
+      "description": "",
+      "configName": "flink_home",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/flink"
+    },
+    {
+      "name": "datax_home",
+      "label": "datax_home",
+      "description": "",
+      "configName": "datax_home",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/datax"
+    },
+    {
+      "name": "seatunnel_home",
+      "label": "seatunnel_home",
+      "description": "",
+      "configName": "seatunnel_home",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/seatunnel"
+    },
+    {
+      "name": "chunjun_home",
+      "label": "chunjun_home",
+      "description": "",
+      "configName": "chunjun_home",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/opt/soft/chunjun"
+    },
+    {
+      "name": "path",
+      "label": "path",
+      "description": "",
+      "configName": "path",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "$HADOOP_HOME/bin:$SPARK_HOME1/bin:$SPARK_HOME2/bin:$PYTHON_HOME/bin:$JAVA_HOME/bin:$HIVE_HOME/bin:$FLINK_HOME/bin:$DATAX_HOME/bin:$SEATUNNEL_HOME/bin:$CHUNJUN_HOME/bin:$PATH"
+    },
+    {
+      "name": "ssh_port",
+      "label": "ssh_port",
+      "description": "",
+      "configName": "ssh_port",
+      "required": "true",
+      "type": "int",
+      "configurableInWizard": false,
+      "default": "22"
+    },
+    {
+      "name": "deployUser",
+      "label": "deployUser",
+      "description": "",
+      "configName": "deployUser",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "dolphinscheduler"
+    },
+    {
+      "name": "zkRoot",
+      "label": "zkRoot",
+      "description": "",
+      "configName": "zkRoot",
+      "required": "true",
+      "type": "string",
+      "configurableInWizard": false,
+      "default": "/dolphinscheduler"
+    }
+  ]
 }
