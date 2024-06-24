@@ -125,13 +125,13 @@ init() {
  
 start() {
 	echo "Running DS"
-   sh $install_path/bin/dolphinscheduler-daemon-cdh.sh stop $server_name;
-   exec sh $install_path/bin/dolphinscheduler-daemon-cdh.sh start $server_name;
+   sh $install_path/bin/dolphinscheduler-daemon.sh stop $server_name;
+   exec sh $install_path/bin/dolphinscheduler-daemon.sh start $server_name;
 }
  
 stop() {
     echo "stop DS"
-   sh $install_path/bin/dolphinscheduler-daemon-cdh.sh stop $server_name;
+   sh $install_path/bin/dolphinscheduler-daemon.sh stop $server_name;
 }
  
  
