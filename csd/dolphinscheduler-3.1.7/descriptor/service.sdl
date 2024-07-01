@@ -452,6 +452,7 @@
       "required": "true",
       "type": "path",
       "configurableInWizard": false,
+      "pathType": "serviceSpecific",
       "default": "/tmp/dolphinscheduler"
     },
     {
@@ -632,6 +633,7 @@
       "required": "true",
       "type": "path",
       "configurableInWizard": false,
+      "pathType": "serviceSpecific",
       "default": "/dolphinscheduler"
     }
   ]
