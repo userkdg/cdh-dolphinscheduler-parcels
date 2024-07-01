@@ -357,7 +357,7 @@
     {
       "name": "username",
       "label": "username",
-      "description": "username",
+      "description": "数据库用户名",
       "configName": "username",
       "required": "true",
       "type": "string",
@@ -367,7 +367,7 @@
     {
       "name": "password",
       "label": "password",
-      "description": "password",
+      "description": "数据库密码",
       "configName": "password",
       "required": "true",
       "type": "string",
@@ -377,7 +377,7 @@
     {
       "name": "zookeeper_server",
       "label": "Zookeeper Server",
-      "description": "zookeeper_server",
+      "description": "zookeeper服务地址",
       "configName": "zookeeper_server",
       "required": "false",
       "type": "string",
@@ -440,9 +440,9 @@
       "description": "ui展示端口",
       "configName": "api_server_port",
       "required": "true",
-      "type": "string",
+      "type": "port",
       "configurableInWizard": false,
-      "default": "12345"
+      "default": 12345
     },
     {
       "name": "install_path",
@@ -450,14 +450,14 @@
       "description": "实例保存路径",
       "configName": "install_path",
       "required": "true",
-      "type": "string",
+      "type": "path",
       "configurableInWizard": false,
       "default": "/tmp/dolphinscheduler"
     },
     {
       "name": "spring_cache_type",
       "label": "spring_cache_type",
-      "description": "",
+      "description": "缓存策略",
       "configName": "spring_cache_type",
       "required": "true",
       "type": "string",
@@ -467,7 +467,7 @@
     {
       "name": "spring_jackson_time_zone",
       "label": "spring_jackson_time_zone",
-      "description": "",
+      "description": "序列化时区",
       "configName": "spring_jackson_time_zone",
       "required": "true",
       "type": "string",
@@ -477,17 +477,17 @@
     {
       "name": "master_fetch_command_num",
       "label": "master_fetch_command_num",
-      "description": "",
+      "description": "主节点获取命令数量",
       "configName": "master_fetch_command_num",
       "required": "true",
-      "type": "integer",
+      "type": "long",
       "configurableInWizard": false,
-      "default": "50"
+      "default": 50
     },
     {
       "name": "registry_type",
       "label": "registry_type",
-      "description": "",
+      "description": "注册中心类型",
       "configName": "registry_type",
       "required": "true",
       "type": "string",
@@ -497,7 +497,7 @@
     {
       "name": "hadoop_home",
       "label": "hadoop_home",
-      "description": "",
+      "description": "HADOOP_HOME",
       "configName": "hadoop_home",
       "required": "true",
       "type": "string",
@@ -507,7 +507,7 @@
     {
       "name": "hadoop_conf_dir",
       "label": "hadoop_conf_dir",
-      "description": "",
+      "description": "HADOOP_CONF_DIR",
       "configName": "hadoop_conf_dir",
       "required": "true",
       "type": "string",
@@ -517,7 +517,7 @@
     {
       "name": "spark_home1",
       "label": "spark_home1",
-      "description": "",
+      "description": "SPARK_HOME1",
       "configName": "spark_home1",
       "required": "true",
       "type": "string",
@@ -527,7 +527,7 @@
     {
       "name": "spark_home2",
       "label": "spark_home2",
-      "description": "",
+      "description": "SPARK_HOME2",
       "configName": "spark_home2",
       "required": "true",
       "type": "string",
@@ -537,7 +537,7 @@
     {
       "name": "python_home",
       "label": "python_home",
-      "description": "",
+      "description": "PYTHON_HOME",
       "configName": "python_home",
       "required": "true",
       "type": "string",
@@ -547,7 +547,7 @@
     {
       "name": "hive_home",
       "label": "hive_home",
-      "description": "",
+      "description": "HIVE_HOME",
       "configName": "hive_home",
       "required": "true",
       "type": "string",
@@ -557,7 +557,7 @@
     {
       "name": "flink_home",
       "label": "flink_home",
-      "description": "",
+      "description": "FLINK_HOME",
       "configName": "flink_home",
       "required": "true",
       "type": "string",
@@ -567,7 +567,7 @@
     {
       "name": "datax_home",
       "label": "datax_home",
-      "description": "",
+      "description": "DATAX_HOME",
       "configName": "datax_home",
       "required": "true",
       "type": "string",
@@ -577,7 +577,7 @@
     {
       "name": "seatunnel_home",
       "label": "seatunnel_home",
-      "description": "",
+      "description": "SEATUNNEL_HOME",
       "configName": "seatunnel_home",
       "required": "true",
       "type": "string",
@@ -587,7 +587,7 @@
     {
       "name": "chunjun_home",
       "label": "chunjun_home",
-      "description": "",
+      "description": "CHUNJUN_HOME",
       "configName": "chunjun_home",
       "required": "true",
       "type": "string",
@@ -597,7 +597,7 @@
     {
       "name": "path",
       "label": "path",
-      "description": "",
+      "description": "PATH环境变量",
       "configName": "path",
       "required": "true",
       "type": "string",
@@ -607,17 +607,17 @@
     {
       "name": "ssh_port",
       "label": "ssh_port",
-      "description": "",
+      "description": "节点SSH 端口",
       "configName": "ssh_port",
       "required": "true",
-      "type": "integer",
+      "type": "port",
       "configurableInWizard": false,
-      "default": "22"
+      "default": 22
     },
     {
       "name": "deployUser",
       "label": "deployUser",
-      "description": "",
+      "description": "集群节点部署用户",
       "configName": "deployUser",
       "required": "true",
       "type": "string",
@@ -627,10 +627,10 @@
     {
       "name": "zkRoot",
       "label": "zkRoot",
-      "description": "",
+      "description": "注册中心根节点",
       "configName": "zkRoot",
       "required": "true",
-      "type": "string",
+      "type": "path",
       "configurableInWizard": false,
       "default": "/dolphinscheduler"
     }
