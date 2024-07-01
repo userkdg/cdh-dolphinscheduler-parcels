@@ -97,17 +97,22 @@ config() {
       sed -i  "s#setTaskDirToTenant.enable.*#setTaskDirToTenant.enable=true#g" $DS_HOME/api-server/conf/common.properties
    fi
 
-   cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/worker-server/conf/common.properties
-   cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/master-server/conf/common.properties
-   cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/alert-server/conf/common.properties
+   \cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/worker-server/conf/common.properties
+   \cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/master-server/conf/common.properties
+   \cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/alert-server/conf/common.properties
 
-   # 增加软连接
-   ln -s $HADOOP_CONF_DIR/core-site.xml $DS_HOME/api-server/conf/core-site.xml
-   ln -s $HADOOP_CONF_DIR/hdfs-site.xml $DS_HOME/api-server/conf/hdfs-site.xml
-   ln -s $HADOOP_CONF_DIR/core-site.xml $DS_HOME/master-server/conf/core-site.xml
-   ln -s $HADOOP_CONF_DIR/hdfs-site.xml $DS_HOME/master-server/conf/hdfs-site.xml
-   ln -s $HADOOP_CONF_DIR/core-site.xml $DS_HOME/worker-server/conf/core-site.xml
-   ln -s $HADOOP_CONF_DIR/hdfs-site.xml $DS_HOME/worker-server/conf/hdfs-site.xml
+   if [ "$server_name" = "api-server" ]; then
+     ln -s $hadoop_conf_dir/core-site.xml $DS_HOME/api-server/conf/core-site.xml
+     ln -s $hadoop_conf_dir/hdfs-site.xml $DS_HOME/api-server/conf/hdfs-site.xml
+   fi
+   if [ "$server_name" = "worker-server" ]; then
+     ln -s $hadoop_conf_dir/core-site.xml $DS_HOME/worker-server/conf/core-site.xml
+     ln -s $hadoop_conf_dir/hdfs-site.xml $DS_HOME/worker-server/conf/hdfs-site.xml
+   fi
+   if [ "$server_name" = "master-server" ]; then
+     ln -s $hadoop_conf_dir/core-site.xml $DS_HOME/master-server/conf/core-site.xml
+     ln -s $hadoop_conf_dir/hdfs-site.xml $DS_HOME/master-server/conf/hdfs-site.xml
+   fi
 
    # 其他配置 修改相应的配置文件 不进行替换
 }
