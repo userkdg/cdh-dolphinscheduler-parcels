@@ -480,7 +480,7 @@
       "description": "",
       "configName": "master_fetch_command_num",
       "required": "true",
-      "type": "int",
+      "type": "integer",
       "configurableInWizard": false,
       "default": "50"
     },
@@ -610,7 +610,7 @@
       "description": "",
       "configName": "ssh_port",
       "required": "true",
-      "type": "int",
+      "type": "integer",
       "configurableInWizard": false,
       "default": "22"
     },
