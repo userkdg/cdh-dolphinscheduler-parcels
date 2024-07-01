@@ -102,14 +102,20 @@ config() {
    \cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/alert-server/conf/common.properties
 
    if [ "$server_name" = "api-server" ]; then
+     rm -f $DS_HOME/api-server/conf/core-site.xml
+     rm -f $DS_HOME/api-server/conf/hdfs-site.xml
      ln -s $hadoop_conf_dir/core-site.xml $DS_HOME/api-server/conf/core-site.xml
      ln -s $hadoop_conf_dir/hdfs-site.xml $DS_HOME/api-server/conf/hdfs-site.xml
    fi
    if [ "$server_name" = "worker-server" ]; then
+     rm -f $DS_HOME/worker-server/conf/core-site.xml
+     rm -f $DS_HOME/worker-server/conf/hdfs-site.xml
      ln -s $hadoop_conf_dir/core-site.xml $DS_HOME/worker-server/conf/core-site.xml
      ln -s $hadoop_conf_dir/hdfs-site.xml $DS_HOME/worker-server/conf/hdfs-site.xml
    fi
    if [ "$server_name" = "master-server" ]; then
+     rm -f $DS_HOME/master-server/conf/core-site.xml
+     rm -f $DS_HOME/master-server/conf/hdfs-site.xml
      ln -s $hadoop_conf_dir/core-site.xml $DS_HOME/master-server/conf/core-site.xml
      ln -s $hadoop_conf_dir/hdfs-site.xml $DS_HOME/master-server/conf/hdfs-site.xml
    fi
