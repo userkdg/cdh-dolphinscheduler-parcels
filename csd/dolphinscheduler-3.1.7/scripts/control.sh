@@ -29,15 +29,15 @@ config() {
    echo "install_path: $install_path"
    echo "api_server_port: $api_server_port"
    echo "ips: $ips"
-   spring_datasource_url="jdbc:mysql://$dbhost/$dbname?useUnicode=true&characterEncoding=UTF-8\&useSSL=false\&useTimezone=true\&serverTimezone=GMT%2B8"
+   # spring_datasource_url="jdbc:mysql://$dbhost/$dbname?useUnicode=true&characterEncoding=UTF-8\&useSSL=false\&useTimezone=true\&serverTimezone=GMT%2B8"
    registry_zookeeper_connect_string="$zookeeper_server"
 
    # JAVA_HOME, will use it to start DolphinScheduler server
    sed -i  "s#JAVA_HOME.*#JAVA_HOME=\"$JAVA_HOME\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    # Database related configuration, set database type, username and password
    sed -i  "s#DATABASE.*#DATABASE=\"${database}\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
-   sed -i  "s#SPRING_PROFILES_ACTIVE.*#SPRING_PROFILES_ACTIVE=\${DATABASE}" $DS_HOME/bin/env/dolphinscheduler_env.sh
-   sed -i  "s#SPRING_DATASOURCE_URL.*#SPRING_DATASOURCE_URL=\"$spring_datasource_url\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
+   # sed -i  "s#SPRING_PROFILES_ACTIVE.*#SPRING_PROFILES_ACTIVE=${database}#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
+   sed -i  "s#SPRING_DATASOURCE_URL.*#SPRING_DATASOURCE_URL=\"jdbc:mysql://$dbhost/$dbname?useUnicode=true&characterEncoding=UTF-8\&useSSL=false\&useTimezone=true\&serverTimezone=GMT%2B8\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    sed -i  "s#SPRING_DATASOURCE_USERNAME.*#SPRING_DATASOURCE_USERNAME=\"$username\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    sed -i  "s#SPRING_DATASOURCE_PASSWORD.*#SPRING_DATASOURCE_PASSWORD=\"$password\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    # DolphinScheduler server related configuration
