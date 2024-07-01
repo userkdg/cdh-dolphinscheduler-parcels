@@ -50,3 +50,7 @@ jar -cvf DS-3.1.7.jar csd/*
 
 2、修改csd包中service.sdl文件cdhVersion属性
 ![cdh_version2](./docs/img/cdh_version2.png)
+
+
+3、 暂时未解决问题
+![URL填充错误问题](./img.png)

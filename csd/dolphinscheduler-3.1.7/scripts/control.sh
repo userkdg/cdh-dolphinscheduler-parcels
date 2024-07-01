@@ -37,6 +37,7 @@ config() {
    # Database related configuration, set database type, username and password
    sed -i  "s#DATABASE.*#DATABASE=\"${database}\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    # sed -i  "s#SPRING_PROFILES_ACTIVE.*#SPRING_PROFILES_ACTIVE=${database}#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
+   # todo 待解决：URL填充错误问题
    sed -i  "s#SPRING_DATASOURCE_URL.*#SPRING_DATASOURCE_URL=\"jdbc:mysql://$dbhost/$dbname?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    sed -i  "s#SPRING_DATASOURCE_USERNAME.*#SPRING_DATASOURCE_USERNAME=\"$username\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
    sed -i  "s#SPRING_DATASOURCE_PASSWORD.*#SPRING_DATASOURCE_PASSWORD=\"$password\"#g" $DS_HOME/bin/env/dolphinscheduler_env.sh
