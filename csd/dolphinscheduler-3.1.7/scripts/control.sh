@@ -97,9 +97,9 @@ config() {
       sed -i  "s#setTaskDirToTenant.enable.*#setTaskDirToTenant.enable=true#g" $DS_HOME/api-server/conf/common.properties
    fi
 
-   \cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/worker-server/conf/common.properties
-   \cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/master-server/conf/common.properties
-   \cp -p $DS_HOME/api-server/conf/common.properties $DS_HOME/alert-server/conf/common.properties
+   \cp -p -f $DS_HOME/api-server/conf/common.properties $DS_HOME/worker-server/conf/common.properties
+   \cp -p -f $DS_HOME/api-server/conf/common.properties $DS_HOME/master-server/conf/common.properties
+   \cp -p -f $DS_HOME/api-server/conf/common.properties $DS_HOME/alert-server/conf/common.properties
 
    if [ "$server_name" = "api-server" ]; then
      rm -f $DS_HOME/api-server/conf/core-site.xml
